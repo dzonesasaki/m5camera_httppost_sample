@@ -1,0 +1,163 @@
+[
+    {
+        "id": "f29d80dd.a7db9",
+        "type": "file",
+        "z": "4da83141.959e38",
+        "name": "",
+        "filename": "receiveCam.jpg",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 480,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1b227f1a.61fcd9",
+        "type": "template",
+        "z": "4da83141.959e38",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "text",
+        "syntax": "mustache",
+        "template": "file receved",
+        "output": "str",
+        "x": 460,
+        "y": 140,
+        "wires": [
+            [
+                "85872be3.bfe37"
+            ]
+        ]
+    },
+    {
+        "id": "85872be3.bfe37",
+        "type": "http response",
+        "z": "4da83141.959e38",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 650,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "511e343b.58d36c",
+        "type": "http in",
+        "z": "4da83141.959e38",
+        "name": "",
+        "url": "/mypost",
+        "method": "post",
+        "upload": true,
+        "swaggerDoc": "",
+        "x": 110,
+        "y": 160,
+        "wires": [
+            [
+                "e84313e8.7da9e"
+            ]
+        ]
+    },
+    {
+        "id": "e84313e8.7da9e",
+        "type": "function",
+        "z": "4da83141.959e38",
+        "name": "",
+        "func": "let mymsgB={};\nvar myArray = [];\nmyArray=msg.req.files[0].buffer;\nmymsgB.payload=myArray;\nmymsgB.filename=\"test02.png\";\n\nreturn [msg,mymsgB];",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 280,
+        "y": 160,
+        "wires": [
+            [
+                "1b227f1a.61fcd9"
+            ],
+            [
+                "f29d80dd.a7db9"
+            ]
+        ]
+    },
+    {
+        "id": "ce2788d4.a003a8",
+        "type": "http in",
+        "z": "4da83141.959e38",
+        "name": "",
+        "url": "/get",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 120,
+        "y": 340,
+        "wires": [
+            [
+                "ebd085d8.2efbc"
+            ]
+        ]
+    },
+    {
+        "id": "ebd085d8.2efbc",
+        "type": "file in",
+        "z": "4da83141.959e38",
+        "name": "",
+        "filename": "receiveCam.jpg",
+        "format": "",
+        "x": 300,
+        "y": 340,
+        "wires": [
+            [
+                "89c5a929.e73f4"
+            ]
+        ]
+    },
+    {
+        "id": "89c5a929.e73f4",
+        "type": "change",
+        "z": "4da83141.959e38",
+        "name": "Set Headers",
+        "rules": [
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "headers.content-type",
+                "pt": "msg",
+                "to": "image/png",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 490,
+        "y": 340,
+        "wires": [
+            [
+                "c98c08e2.7ee3b"
+            ]
+        ]
+    },
+    {
+        "id": "c98c08e2.7ee3b",
+        "type": "http response",
+        "z": "4da83141.959e38",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 630,
+        "y": 340,
+        "wires": []
+    }
+]
