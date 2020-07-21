@@ -113,8 +113,9 @@ void initCam(void){
   config.pin_pwdn = PWDN_GPIO_NUM;
   config.pin_reset = RESET_GPIO_NUM;
   config.xclk_freq_hz = 20000000;
-  config.pixel_format = PIXFORMAT_RGB565;
-  config.frame_size = FRAMESIZE_QVGA;
+  config.pixel_format = PIXFORMAT_JPEG; // PIXFORMAT_ + YUV422|GRAYSCALE|RGB565|JPEG
+  config.jpeg_quality = 10;
+  config.frame_size = FRAMESIZE_UXGA; //FRAMESIZE_ + QVGA|CIF|VGA|SVGA|XGA|SXGA|UXGA
   config.fb_count = 1;
 
   esp_err_t err = esp_camera_init(&config);
@@ -198,25 +199,12 @@ void loop() {
     return;
   }
 
-  // ---- convert to jpeg
-  // ref to https://github.com/espressif/esp32-camera
-  uint8_t * ui8BufJpg;
-  uint32_t iNumDat ;
-  bool bFlugJpegConv = frame2jpg(fb, 80, &ui8BufJpg, &iNumDat);
-  if(bFlugJpegConv != 1)
-  {
-    Serial.println("failure : jpeg convert");
-    free(ui8BufJpg);
-    return;
-  }
-
   // ---- http post
-  int iRetHttp = httppost( ui8BufJpg , iNumDat);
-  free(ui8BufJpg);
-	if (iRetHttp==200)
-	{
-		Serial.print("*");
-	}
+  int iRetHttp = httppost( fb->buf , fb->len);
+  if (iRetHttp==200)
+  {
+    Serial.print("*");
+  }
   else
   {
     Serial.println("");
