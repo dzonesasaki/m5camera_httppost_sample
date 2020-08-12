@@ -4,7 +4,7 @@ urlSite='http://192.168.1.2:1880' #host
 urlGet='/get'
 urlParam=''
 
-fnames='myimg.png'
+fnames='myimg.jpg'
 
 myUrl = urlSite + urlGet + urlParam
 
